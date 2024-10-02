@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, List, Stack, TextField, Typography} from "@mui/material";
 import {createToDo, fetchToDos, ToDo} from "./ToDoService";
 import {ToDoCard} from "./ToDoCard";
@@ -7,8 +7,12 @@ export const ToDoListPage = () => {
     const [toDos, setToDos] = useState<ToDo[]>([])
     const [newToDoText, setNewToDoText] = useState<string>('')
 
-    useEffect(() => {
+    const updateToDos = () => {
         fetchToDos().then(setToDos);
+    };
+
+    useEffect(() => {
+        updateToDos();
     }, [])
 
     const handleAdd = () => {
@@ -20,13 +24,15 @@ export const ToDoListPage = () => {
         }
     }
 
+
+
     return (
         <Stack p={4} height='100vh'>
             <Stack mt={7} pb={1} flex='1' overflow='auto'>
                 <Typography variant='h5' fontWeight={600}>Your To Do List</Typography>
                 <List>
                     {toDos.map(toDo => (
-                        <ToDoCard key={toDo.id + toDo.text} initialToDo={toDo}/>
+                        <ToDoCard updateToDos={updateToDos} key={toDo.id + toDo.text} initialToDo={toDo}/>
                     ))}
                 </List>
             </Stack>
@@ -37,3 +43,4 @@ export const ToDoListPage = () => {
         </Stack>
     );
 };
+

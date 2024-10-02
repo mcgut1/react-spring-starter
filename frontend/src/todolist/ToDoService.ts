@@ -8,6 +8,7 @@ export type ToDo = {
 
 type CreateToDo = (text: string) => Promise<ToDo>;
 type FetchToDos = () => Promise<ToDo[]>;
+type DeleteToDo = (id: number) => Promise<any>;
 
 export const createToDo: CreateToDo = (text) => (
     axios.post('/api/todos', {text, status: 'active'})
@@ -16,5 +17,10 @@ export const createToDo: CreateToDo = (text) => (
 
 export const fetchToDos: FetchToDos = () => (
     axios.get('/api/todos')
+        .then((r: AxiosResponse<ToDo[]>) => r.data)
+)
+
+export const deleteToDo: DeleteToDo = (id: number) => (
+    axios.delete(`/api/todos/${id}`)
         .then((r: AxiosResponse<ToDo[]>) => r.data)
 )
